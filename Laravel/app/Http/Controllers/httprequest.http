@@ -1,0 +1,166 @@
+@back = http://127.0.0.1:8000/api/v1
+
+# Diagnoses ================================================================
+###
+GET {{back}}/diagnoses HTTP/
+content-type: application/json
+
+
+###
+GET {{back}}/diagnoses/1 HTTP/
+content-type: application/json
+
+###
+POST {{back}}/diagnoses HTTP/
+content-type: application/json
+
+{
+    "diagnosesName": "diagnosesName22233",
+    "patient_id": 1,
+    "doctorsid_id": 1
+}
+
+###
+PATCH  {{back}}/diagnoses/6
+content-type: application/json
+
+{
+    "diagnosesName": "diagnosesName11"
+}
+
+###
+DELETE  {{back}}/diagnoses/5 HTTP/
+content-type: application/json
+
+
+
+# Doctors ================================================================
+###
+GET {{back}}/doctors HTTP/
+content-type: application/json
+
+###
+GET {{back}}/doctors/1 HTTP/
+content-type: application/json
+
+###
+POST {{back}}/doctors HTTP/
+content-type: application/json
+
+{
+    "firstName": "firstName3",
+    "lastName": "lastName3"
+}
+
+###
+
+PATCH  {{back}}/doctors/1
+content-type: application/json
+
+{
+    "firstName": "Vova1",
+    "lastName": "Danilchyk1"
+}
+
+###
+DELETE  {{back}}/doctors/3 HTTP/
+content-type: application/json
+
+
+
+# Patients ================================================================
+###
+GET {{back}}/patients HTTP/
+content-type: application/json
+
+###
+GET {{back}}/patients/1 HTTP/
+content-type: application/json
+
+###
+POST {{back}}/patients HTTP/
+content-type: application/json
+
+{
+    "firstName": "firstName44",
+    "lastName": "lastName44"
+}
+
+###
+PATCH  {{back}}/patients/1
+content-type: application/json
+
+{
+    "firstName": "Vova1",
+    "lastName": "Danilchyk"
+}
+
+###
+DELETE  {{back}}/patients/3 HTTP/
+content-type: application/json
+
+
+
+
+# Schedule ================================================================
+###
+GET {{back}}/schedule HTTP/
+content-type: application/json
+
+###
+GET {{back}}/schedule/1 HTTP/
+content-type: application/json
+
+###
+POST {{back}}/schedule HTTP/
+content-type: application/json
+
+{
+    "name": "schedule123123",
+    "doctorsid_id": 1
+}
+
+###
+PATCH  {{back}}/schedule/1
+content-type: application/json
+
+{
+    "name": "123"
+}
+
+###
+DELETE  {{back}}/schedule/2 HTTP/
+content-type: application/json
+
+
+
+
+# Treatment ================================================================
+###
+GET {{back}}/treatment HTTP/
+content-type: application/json
+
+###
+GET {{back}}/treatment/1 HTTP/
+content-type: application/json
+
+###
+POST {{back}}/treatment HTTP/
+content-type: application/json
+
+{
+    "name": "treatment11111",
+    "patient_id": 1
+}
+
+###
+PATCH  {{back}}/treatment/1
+content-type: application/json
+
+{
+    "name": "Vova1"
+}
+
+###
+DELETE  {{back}}/treatment/3 HTTP/
+content-type: application/json
