@@ -17,6 +17,7 @@ final class ScheduleControler extends AbstractController
 {
 
     /**
+     * @param Request $request
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(private readonly EntityManagerInterface $entityManager)
@@ -27,9 +28,17 @@ final class ScheduleControler extends AbstractController
      * @return JsonResponse
      */
     #[Route('/schedule', name: 'get_schedule', methods: [Request::METHOD_GET])]
-    public function getSchedule(): JsonResponse
+    public function getSchedule(Request $request): JsonResponse
     {
-        $schedule = $this->entityManager->getRepository(Schedule::class)->findAll();
+        $queryParams = $request->query->all();
+
+        $page = $queryParams['page'] ?? 1;
+        $itemsPerPage = $queryParams['itemsPerPage'] ?? 2;
+
+        unset($queryParams['page']);
+        unset($queryParams['itemsPerPage']);
+
+        $schedule = $this->entityManager->getRepository(Schedule::class)->getSchedule($queryParams, $page, $itemsPerPage);
 
         return new JsonResponse(['data' => $schedule], Response::HTTP_OK);
     }

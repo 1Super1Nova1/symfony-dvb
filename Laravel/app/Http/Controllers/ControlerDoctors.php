@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doctors;
+use App\Repository\DoctorRepository;
 use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,12 +12,32 @@ use function response;
 class ControlerDoctors extends Controller
 {
 
+    /**
+     * @var DoctorRepository
+     */
+    private DoctorRepository $doctorRepository;
+
+    /**
+     * @param DoctorRepository $doctorRepository
+     */
+    public function __construct(DoctorRepository $doctorRepository)
+    {
+        $this->doctorRepository = $doctorRepository;
+    }
+
     /** 
      * @return mixed
      */
-    public function getDoctors(): mixed
+    public function getDoctors(Request $request): mixed
     {
-        $Doctors = Doctors::all();
+        $queryParams = $request->all();
+
+        $itemsPerPage = $queryParams['itemsPerPage'] ?? 2;
+
+        unset($queryParams['page']);
+        unset($queryParams['itemsPerPage']);
+
+        $Doctors = $this->doctorRepository->getDoctors($queryParams, $itemsPerPage ?? 2);
 
         return response()->json($Doctors, Response::HTTP_OK);
     }

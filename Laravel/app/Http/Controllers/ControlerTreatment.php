@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Treatment;
+use App\Repository\TreatmentRepository;
 use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,12 +12,32 @@ use function response;
 class ControlerTreatment extends Controller
 {
 
+    /**
+     * @var TreatmentRepository
+     */
+    private TreatmentRepository $TreatmentRepository;
+
+    /**
+     * @param TreatmentRepository $TreatmentRepository
+     */
+    public function __construct(TreatmentRepository $TreatmentRepository)
+    {
+        $this->TreatmentRepository = $TreatmentRepository;
+    }
+
     /** 
      * @return mixed
      */
-    public function getTreatment(): mixed
+    public function getTreatment(Request $request): mixed
     {
-        $Treatment = Treatment::all();
+        $queryParams = $request->all();
+
+        $itemsPerPage = $queryParams['itemsPerPage'] ?? 2;
+
+        unset($queryParams['page']);
+        unset($queryParams['itemsPerPage']);
+
+        $Treatment = $this->TreatmentRepository->getTreatment($queryParams, $itemsPerPage ?? 2);
 
         return response()->json($Treatment, Response::HTTP_OK);
     }

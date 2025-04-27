@@ -58,11 +58,13 @@ class Treatment implements JsonSerializable
     #[ArrayShape([
         'id'          => "int|null",
         'name'        => "null|string",
+        'patient_id' => "int|null",
     ])] public function jsonSerialize(): mixed
     {
         return [
             'id'          => $this->getId(),
             'name'        => $this->getName(),
+            'patient_id'        => $this->getPatient(),
         ];
     }
 }

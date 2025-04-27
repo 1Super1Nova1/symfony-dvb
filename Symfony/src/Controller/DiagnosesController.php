@@ -25,12 +25,29 @@ final class DiagnosesController extends AbstractController
     }
 
     /**
+     * @param Request $request
      * @return JsonResponse
      */
     #[Route('/diagnoses', name: 'get_diagnoses', methods: [Request::METHOD_GET])]
-    public function getDiagnoses(): JsonResponse
+    public function getDiagnoses(Request $request): Response
     {
-        $diagnoses = $this->entityManager->getRepository(Diagnoses::class)->findAll();
+        $queryParams = $request->query->all();
+
+        $page = $queryParams['page'] ?? 1;
+        $itemsPerPage = $queryParams['itemsPerPage'] ?? 1;
+
+        unset($queryParams['page']);
+        unset($queryParams['itemsPerPage']);
+
+        $diagnoses = $this->entityManager->getRepository(Diagnoses::class)->getDiagnoses($queryParams, $page, $itemsPerPage);
+
+        // dump(['data' => $diagnoses]);
+        // exit;
+
+        // return $this->render(
+        //     'diagnoses_controller/index.html.twig',
+        //     ['diagnoses_controller' => $diagnoses]
+        // );
 
         return new JsonResponse(['data' => $diagnoses], Response::HTTP_OK);
     }

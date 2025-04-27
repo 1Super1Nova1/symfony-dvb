@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Diagnoses;
+use App\Repository\DiagnosesRepository;
 use App\Models\Doctors;
 use App\Models\Patients;
 use Exception;
@@ -13,12 +14,32 @@ use function response;
 class ControlerDiagnoses extends Controller
 {
 
+    /**
+     * @var DiagnosesRepository
+     */
+    private DiagnosesRepository $DiagnosesRepository;
+
+    /**
+     * @param DiagnosesRepository $DiagnosesRepository
+     */
+    public function __construct(DiagnosesRepository $DiagnosesRepository)
+    {
+        $this->DiagnosesRepository = $DiagnosesRepository;
+    }
+
     /** 
      * @return mixed
      */
-    public function getDiagnoses(): mixed
+    public function getDiagnoses(Request $request): mixed
     {
-        $Diagnoses = Diagnoses::all();
+        $queryParams = $request->all();
+
+        $itemsPerPage = $queryParams['itemsPerPage'] ?? 2;
+
+        unset($queryParams['page']);
+        unset($queryParams['itemsPerPage']);
+
+        $Diagnoses = $this->DiagnosesRepository->getDiagnoses($queryParams, $itemsPerPage ?? 2);
 
         return response()->json($Diagnoses, Response::HTTP_OK);
     }

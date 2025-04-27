@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DiagnosesController!{% endblock %}
+
+{% block body %}
+
+    {% for diagnoses in diagnoses_controller %}
+        id: {{ diagnoses.diagnosisMade.id }}
+        firstName: {{ diagnoses.diagnosisMade.firstName }}
+        lastName: {{ diagnoses.diagnosisMade.lastName }}
+    {% endfor %}
+
+    {{ dump(diagnoses_controller) }}
+    diagnoses_controller.0.diagnosisMade.firstName ---> {{ diagnoses_controller.0.diagnosisMade.firstName }}
+{% endblock %}

@@ -73,16 +73,16 @@ class Diagnoses implements JsonSerializable
      */
     #[ArrayShape([
         'id'          => "int|null",
-        'diagnosesName'       => "null|string",
-        'diagnosisHave'       => "null|string",
-        'diagnosisMade'       => "null|string"
+        'diagnoses_name'       => "null|string",
+        'diagnosis_have_id '       => "null|string",
+        'diagnosis_made_id '       => "null|string"
     ])] public function jsonSerialize(): mixed
     {
         return [
             'id'          => $this->getId(),
-            'diagnosesName'       => $this->getDiagnosesName(),
-            'diagnosisHave'       => $this->getDiagnosisHave(),
-            'diagnosisMade'       => $this->getDiagnosisMade(),
+            'diagnoses_name'       => $this->getDiagnosesName(),
+            'diagnosis_have_id '       => $this->getDiagnosisHave(),
+            'diagnosis_made_id '       => $this->getDiagnosisMade(),
         ];
     }
 }

@@ -50,18 +50,20 @@ class Schedule implements JsonSerializable
         return $this;
     }
 
-    
+
     /**
      * @return mixed
      */
     #[ArrayShape([
-        'id'          => "int|null",
-        'name'        => "null|string",
+        'id' => "int|null",
+        'name' => "null|string",
+        'doctor_be_tuday_id' => "int|null",
     ])] public function jsonSerialize(): mixed
     {
         return [
-            'id'          => $this->getId(),
-            'name'        => $this->getName(),
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'doctor_be_tuday_id' => $this->getDoctorBeTuday(),
         ];
     }
 }

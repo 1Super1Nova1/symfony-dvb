@@ -23,12 +23,21 @@ final class PatientsController extends AbstractController
     }
 
     /**
+     * @param Request $request
      * @return JsonResponse
      */
     #[Route('/patients', name: 'get_patients', methods: [Request::METHOD_GET])]
-    public function getpatients(): JsonResponse
+    public function getpatients(Request $request): JsonResponse
     {
-        $patients = $this->entityManager->getRepository(Patients::class)->findAll();
+        $queryParams = $request->query->all();
+
+        $page = $queryParams['page'] ?? 1;
+        $itemsPerPage = $queryParams['itemsPerPage'] ?? 2;
+
+        unset($queryParams['page']);
+        unset($queryParams['itemsPerPage']);
+
+        $patients = $this->entityManager->getRepository(Patients::class)->getPatients($queryParams, $page, $itemsPerPage);
 
         return new JsonResponse(['data' => $patients], Response::HTTP_OK);
     }

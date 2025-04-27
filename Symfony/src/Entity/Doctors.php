@@ -50,20 +50,20 @@ class Doctors implements JsonSerializable
         return $this;
     }
 
-    
+
     /**
      * @return mixed
      */
     #[ArrayShape([
-        'id'          => "int|null",
-        'firstName'        => "null|string",
-        'lastName'       => "null|string"
+        'id' => "int|null",
+        'firstName' => "null|string",
+        'lastName' => "null|string"
     ])] public function jsonSerialize(): mixed
     {
         return [
-            'id'          => $this->getId(),
-            'firstName'        => $this->getFirstName(),
-            'lastName'       => $this->getLastName(),
+            'id' => $this->getId(),
+            'firstName' => $this->getFirstName(),
+            'lastName' => $this->getLastName(),
         ];
     }
 }

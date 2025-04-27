@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Schedule;
+use App\Repository\ScheduleRepository;
 use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,12 +12,32 @@ use function response;
 class ControlerSchedule extends Controller
 {
 
+    /**
+     * @var ScheduleRepository
+     */
+    private ScheduleRepository $ScheduleRepository;
+
+    /**
+     * @param ScheduleRepository $ScheduleRepository
+     */
+    public function __construct(ScheduleRepository $ScheduleRepository)
+    {
+        $this->ScheduleRepository = $ScheduleRepository;
+    }
+
     /** 
      * @return mixed
      */
-    public function getSchedule(): mixed
+    public function getSchedule(Request $request): mixed
     {
-        $Schedule = Schedule::all();
+        $queryParams = $request->all();
+
+        $itemsPerPage = $queryParams['itemsPerPage'] ?? 2;
+
+        unset($queryParams['page']);
+        unset($queryParams['itemsPerPage']);
+
+        $Schedule = $this->ScheduleRepository->getSchedule($queryParams, $itemsPerPage ?? 2);
 
         return response()->json($Schedule, Response::HTTP_OK);
     }

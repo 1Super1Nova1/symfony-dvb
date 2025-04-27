@@ -24,12 +24,20 @@ final class TreatmentControler extends AbstractController
     }
 
     /**
+     * @param Request $request
      * @return JsonResponse
      */
     #[Route('/treatment', name: 'get_treatment', methods: [Request::METHOD_GET])]
-    public function getTreatment(): JsonResponse
+    public function getTreatment(Request $request): JsonResponse
     {
-        $treatment = $this->entityManager->getRepository(Treatment::class)->findAll();
+        $queryParams = $request->query->all();
+
+        $page = $queryParams['page'] ?? 1;
+        $itemsPerPage = $queryParams['itemsPerPage'] ?? 2;
+
+        unset($queryParams['page']);
+        unset($queryParams['itemsPerPage']);
+        $treatment = $this->entityManager->getRepository(Treatment::class)->getTreatment($queryParams, $page, $itemsPerPage);
 
         return new JsonResponse(['data' => $treatment], Response::HTTP_OK);
     }

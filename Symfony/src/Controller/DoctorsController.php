@@ -15,6 +15,8 @@ use Symfony\Component\Routing\Attribute\Route;
 final class DoctorsController extends AbstractController
 {
 
+    public const ITEMS_PER_PAGE = 2;
+
     /**
      * @param EntityManagerInterface $entityManager
      */
@@ -23,12 +25,21 @@ final class DoctorsController extends AbstractController
     }
 
     /**
+     * @param Request $request
      * @return JsonResponse
      */
     #[Route('/doctors', name: 'get_doctors', methods: [Request::METHOD_GET])]
-    public function getdoctors(): JsonResponse
+    public function getdoctors(Request $request): JsonResponse
     {
-        $doctors = $this->entityManager->getRepository(Doctors::class)->findAll();
+        $queryParams = $request->query->all();
+
+        $page = $queryParams['page'] ?? 1;
+        $itemsPerPage = $queryParams['itemsPerPage'] ?? self::ITEMS_PER_PAGE;
+
+        unset($queryParams['page']);
+        unset($queryParams['itemsPerPage']);
+
+        $doctors = $this->entityManager->getRepository(Doctors::class)->getDoctors($queryParams, $page, $itemsPerPage);
 
         return new JsonResponse(['data' => $doctors], Response::HTTP_OK);
     }
@@ -54,7 +65,7 @@ final class DoctorsController extends AbstractController
     #[Route('/doctors', name: 'post_doctors', methods: [Request::METHOD_POST])]
     public function createdoctors(Request $request): JsonResponse
     {
-        $requestData = json_decode($request->getContent(), true); 
+        $requestData = json_decode($request->getContent(), true);
 
         $doctors = new doctors();
 
